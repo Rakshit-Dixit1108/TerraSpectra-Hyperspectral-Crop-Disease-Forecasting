@@ -1,0 +1,17 @@
+
+from fastapi import APIRouter
+from datetime import datetime, timezone
+
+router = APIRouter(
+    prefix="/health",
+    tags=["Health"]
+)
+
+
+@router.get("/")
+def health_check():
+    return {
+        "status": "healthy",
+        "service": "TerraSpectra Backend",
+        "timestamp": datetime.now(timezone.utc).isoformat()
+    }
