@@ -9,9 +9,12 @@ from app.config import (
     ALLOWED_ORIGINS,
 )
 
+# Import API routers
 from app.routes.health import router as health_router
 from app.routes.dataset import router as dataset_router
 from app.routes.prediction import router as prediction_router
+from app.routes.training import router as training_router
+from app.routes.analysis import router as analysis_router
 
 
 # --------------------------------------------------
@@ -47,6 +50,8 @@ app.add_middleware(
 app.include_router(health_router)
 app.include_router(dataset_router)
 app.include_router(prediction_router)
+app.include_router(training_router)
+app.include_router(analysis_router)
 
 
 # --------------------------------------------------
@@ -66,12 +71,16 @@ def root():
             "dataset": "/dataset/info",
             "prediction_status": "/prediction/status",
             "prediction": "/prediction/predict",
+            "training_status": "/training/status",
+            "training": "/training/train",
+            "analysis_status": "/analysis/status",
+            "analysis": "/analysis/analyze",
         },
     }
 
 
 # --------------------------------------------------
-# APPLICATION STARTUP
+# SYSTEM STATUS
 # --------------------------------------------------
 
 @app.get("/api/status", tags=["System"])
@@ -80,4 +89,11 @@ def api_status():
         "api": "TerraSpectra",
         "status": "operational",
         "version": PROJECT_VERSION,
+        "modules": {
+            "health": "registered",
+            "dataset": "registered",
+            "prediction": "registered",
+            "training": "registered",
+            "analysis": "registered",
+        },
     }
